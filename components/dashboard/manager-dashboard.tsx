@@ -1,15 +1,75 @@
 "use client"
 
-import { useAuth } from "@/hooks/use-auth"
+import { useEffect, useState } from "react"
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Package, FileText, LogOut, User, Plus, Search, TrendingUp, AlertCircle } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+
+interface UserProfile {
+  id: string
+  email: string
+  full_name: string
+  role: string
+}
 
 export function ManagerDashboard() {
-  const { user, logout } = useAuth()
+  const [user, setUser] = useState<UserProfile | null>(null)
+  const [loading, setLoading] = useState(true)
+  const supabase = createClientComponentClient()
+  const router = useRouter()
+
+  useEffect(() => {
+    async function getUser() {
+      try {
+        const {
+          data: { user: authUser },
+        } = await supabase.auth.getUser()
+
+        if (authUser) {
+          const { data: profile } = await supabase.from("users").select("*").eq("email", authUser.email).single()
+
+          if (profile) {
+            setUser(profile)
+          } else {
+            setUser({
+              id: authUser.id,
+              email: authUser.email || "",
+              full_name: "IT Manager",
+              role: "manager",
+            })
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    getUser()
+  }, [supabase])
+
+  const handleLogout = async () => {
+    // Use Supabase logout function
+    await supabase.auth.signOut()
+    router.push("/")
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -32,13 +92,13 @@ export function ManagerDashboard() {
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">{user?.name}</p>
+                <p className="text-sm font-medium text-gray-900">{user?.full_name || user?.email}</p>
                 <Badge variant="outline" className="text-xs">
                   <User className="h-3 w-3 mr-1" />
                   Manager IT
                 </Badge>
               </div>
-              <Button variant="outline" size="sm" onClick={logout}>
+              <Button variant="outline" size="sm" onClick={handleLogout}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>
@@ -50,7 +110,7 @@ export function ManagerDashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome back, {user?.name}</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome back, {user?.full_name || "Manager"}</h2>
           <p className="text-gray-600">Manage IT inventory and track issuances for MP Tourism Board</p>
         </div>
 
