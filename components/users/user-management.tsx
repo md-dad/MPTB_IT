@@ -1,18 +1,41 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useAuth } from "@/hooks/use-auth"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Users, Plus, Search, Edit, Trash2, Shield, User, LogOut, ArrowLeft } from "lucide-react"
-import { AddUserDialog } from "./add-user-dialog"
-import { EditUserDialog } from "./edit-user-dialog"
-import { ViewUserDialog } from "./view-user-dialog"
-import Image from "next/image"
-import Link from "next/link"
+import { useState } from "react";
+import { useAuth } from "@/hooks/use-auth";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Users,
+  Plus,
+  Search,
+  Edit,
+  Trash2,
+  Shield,
+  User,
+  LogOut,
+  ArrowLeft,
+} from "lucide-react";
+import { AddUserDialog } from "./add-user-dialog";
+import { EditUserDialog } from "./edit-user-dialog";
+import { ViewUserDialog } from "./view-user-dialog";
+import Image from "next/image";
+import Link from "next/link";
 
 // Mock user data
 const mockUsers = [
@@ -31,7 +54,7 @@ const mockUsers = [
     id: 2,
     name: "IT Manager",
     email: "manager@mptourism.gov.in",
-    role: "manager_it",
+    role: "manager",
     department: "IT Department",
     phone: "0755-2780601",
     isActive: true,
@@ -42,7 +65,7 @@ const mockUsers = [
     id: 3,
     name: "Rajesh Kumar",
     email: "rajesh.kumar@mptourism.gov.in",
-    role: "manager_it",
+    role: "manager",
     department: "Administration",
     phone: "9876543210",
     isActive: true,
@@ -53,30 +76,30 @@ const mockUsers = [
     id: 4,
     name: "Priya Sharma",
     email: "priya.sharma@mptourism.gov.in",
-    role: "manager_it",
+    role: "manager",
     department: "Marketing",
     phone: "9876543211",
     isActive: false,
     createdAt: "2023-03-15",
     lastLogin: "2023-12-20",
   },
-]
+];
 
 export function UserManagement() {
-  const { user, logout } = useAuth()
-  const [users, setUsers] = useState(mockUsers)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [selectedUser, setSelectedUser] = useState(null)
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false)
+  const { user, logout } = useAuth();
+  const [users, setUsers] = useState(mockUsers);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
 
   const filteredUsers = users.filter(
     (user) =>
       user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.department.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      user.department.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleAddUser = (userData) => {
     const newUser = {
@@ -84,26 +107,34 @@ export function UserManagement() {
       ...userData,
       createdAt: new Date().toISOString().split("T")[0],
       lastLogin: "Never",
-    }
-    setUsers([...users, newUser])
-    setIsAddDialogOpen(false)
-  }
+    };
+    setUsers([...users, newUser]);
+    setIsAddDialogOpen(false);
+  };
 
   const handleEditUser = (userData) => {
-    setUsers(users.map((user) => (user.id === selectedUser.id ? { ...user, ...userData } : user)))
-    setIsEditDialogOpen(false)
-    setSelectedUser(null)
-  }
+    setUsers(
+      users.map((user) =>
+        user.id === selectedUser.id ? { ...user, ...userData } : user
+      )
+    );
+    setIsEditDialogOpen(false);
+    setSelectedUser(null);
+  };
 
   const handleDeleteUser = (userId) => {
     if (confirm("Are you sure you want to delete this user?")) {
-      setUsers(users.filter((user) => user.id !== userId))
+      setUsers(users.filter((user) => user.id !== userId));
     }
-  }
+  };
 
   const handleToggleStatus = (userId) => {
-    setUsers(users.map((user) => (user.id === userId ? { ...user, isActive: !user.isActive } : user)))
-  }
+    setUsers(
+      users.map((user) =>
+        user.id === userId ? { ...user, isActive: !user.isActive } : user
+      )
+    );
+  };
 
   const getRoleBadge = (role) => {
     switch (role) {
@@ -113,18 +144,18 @@ export function UserManagement() {
             <Shield className="h-3 w-3 mr-1" />
             Super Admin
           </Badge>
-        )
-      case "manager_it":
+        );
+      case "manager":
         return (
           <Badge variant="secondary">
             <User className="h-3 w-3 mr-1" />
             Manager IT
           </Badge>
-        )
+        );
       default:
-        return <Badge variant="outline">{role}</Badge>
+        return <Badge variant="outline">{role}</Badge>;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -147,13 +178,19 @@ export function UserManagement() {
                 className="filter brightness-0"
               />
               <div>
-                <h1 className="text-lg font-semibold text-gray-900">User Management</h1>
-                <p className="text-sm text-gray-500">Manage system users and permissions</p>
+                <h1 className="text-lg font-semibold text-gray-900">
+                  User Management
+                </h1>
+                <p className="text-sm text-gray-500">
+                  Manage system users and permissions
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">{user?.name}</p>
+                <p className="text-sm font-medium text-gray-900">
+                  {user?.name}
+                </p>
                 <Badge variant="secondary" className="text-xs">
                   <Shield className="h-3 w-3 mr-1" />
                   Super Admin
@@ -179,27 +216,39 @@ export function UserManagement() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{users.length}</div>
-              <p className="text-xs text-muted-foreground">Registered in system</p>
+              <p className="text-xs text-muted-foreground">
+                Registered in system
+              </p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Active Users
+              </CardTitle>
               <User className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{users.filter((u) => u.isActive).length}</div>
+              <div className="text-2xl font-bold">
+                {users.filter((u) => u.isActive).length}
+              </div>
               <p className="text-xs text-muted-foreground">Currently active</p>
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Super Admins</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Super Admins
+              </CardTitle>
               <Shield className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{users.filter((u) => u.role === "super_admin").length}</div>
-              <p className="text-xs text-muted-foreground">System administrators</p>
+              <div className="text-2xl font-bold">
+                {users.filter((u) => u.role === "super_admin").length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                System administrators
+              </p>
             </CardContent>
           </Card>
           <Card>
@@ -208,8 +257,12 @@ export function UserManagement() {
               <User className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{users.filter((u) => u.role === "manager_it").length}</div>
-              <p className="text-xs text-muted-foreground">IT department managers</p>
+              <div className="text-2xl font-bold">
+                {users.filter((u) => u.role === "manager").length}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                IT department managers
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -223,7 +276,9 @@ export function UserManagement() {
                   <Users className="h-5 w-5" />
                   System Users
                 </CardTitle>
-                <CardDescription>Manage user accounts, roles, and permissions</CardDescription>
+                <CardDescription>
+                  Manage user accounts, roles, and permissions
+                </CardDescription>
               </div>
               <Button onClick={() => setIsAddDialogOpen(true)}>
                 <Plus className="h-4 w-4 mr-2" />
@@ -264,25 +319,31 @@ export function UserManagement() {
                       <TableCell>
                         <div>
                           <div className="font-medium">{user.name}</div>
-                          <div className="text-sm text-gray-500">{user.email}</div>
+                          <div className="text-sm text-gray-500">
+                            {user.email}
+                          </div>
                         </div>
                       </TableCell>
                       <TableCell>{getRoleBadge(user.role)}</TableCell>
                       <TableCell>{user.department}</TableCell>
                       <TableCell>
-                        <Badge variant={user.isActive ? "default" : "secondary"}>
+                        <Badge
+                          variant={user.isActive ? "default" : "secondary"}
+                        >
                           {user.isActive ? "Active" : "Inactive"}
                         </Badge>
                       </TableCell>
-                      <TableCell className="text-sm text-gray-500">{user.lastLogin}</TableCell>
+                      <TableCell className="text-sm text-gray-500">
+                        {user.lastLogin}
+                      </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              setSelectedUser(user)
-                              setIsViewDialogOpen(true)
+                              setSelectedUser(user);
+                              setIsViewDialogOpen(true);
                             }}
                           >
                             View
@@ -291,13 +352,17 @@ export function UserManagement() {
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              setSelectedUser(user)
-                              setIsEditDialogOpen(true)
+                              setSelectedUser(user);
+                              setIsEditDialogOpen(true);
                             }}
                           >
                             <Edit className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleToggleStatus(user.id)}>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleToggleStatus(user.id)}
+                          >
                             {user.isActive ? "Deactivate" : "Activate"}
                           </Button>
                           {user.id !== 1 && (
@@ -322,12 +387,16 @@ export function UserManagement() {
       </main>
 
       {/* Dialogs */}
-      <AddUserDialog isOpen={isAddDialogOpen} onClose={() => setIsAddDialogOpen(false)} onAdd={handleAddUser} />
+      <AddUserDialog
+        isOpen={isAddDialogOpen}
+        onClose={() => setIsAddDialogOpen(false)}
+        onAdd={handleAddUser}
+      />
       <EditUserDialog
         isOpen={isEditDialogOpen}
         onClose={() => {
-          setIsEditDialogOpen(false)
-          setSelectedUser(null)
+          setIsEditDialogOpen(false);
+          setSelectedUser(null);
         }}
         onEdit={handleEditUser}
         user={selectedUser}
@@ -335,11 +404,11 @@ export function UserManagement() {
       <ViewUserDialog
         isOpen={isViewDialogOpen}
         onClose={() => {
-          setIsViewDialogOpen(false)
-          setSelectedUser(null)
+          setIsViewDialogOpen(false);
+          setSelectedUser(null);
         }}
         user={selectedUser}
       />
     </div>
-  )
+  );
 }

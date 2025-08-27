@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState } from "react"
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,12 +8,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 export function AddUserDialog({ isOpen, onClose, onAdd }) {
   const [formData, setFormData] = useState({
@@ -23,12 +29,12 @@ export function AddUserDialog({ isOpen, onClose, onAdd }) {
     department: "",
     phone: "",
     isActive: true,
-  })
+  });
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (formData.name && formData.email && formData.role) {
-      onAdd(formData)
+      onAdd(formData);
       setFormData({
         name: "",
         email: "",
@@ -36,20 +42,22 @@ export function AddUserDialog({ isOpen, onClose, onAdd }) {
         department: "",
         phone: "",
         isActive: true,
-      })
+      });
     }
-  }
+  };
 
   const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Add New User</DialogTitle>
-          <DialogDescription>Create a new user account for the IT inventory system.</DialogDescription>
+          <DialogDescription>
+            Create a new user account for the IT inventory system.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -79,13 +87,16 @@ export function AddUserDialog({ isOpen, onClose, onAdd }) {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="role">Role *</Label>
-              <Select value={formData.role} onValueChange={(value) => handleChange("role", value)}>
+              <Select
+                value={formData.role}
+                onValueChange={(value) => handleChange("role", value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="super_admin">Super Admin</SelectItem>
-                  <SelectItem value="manager_it">Manager IT</SelectItem>
+                  <SelectItem value="manager">Manager IT</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -128,5 +139,5 @@ export function AddUserDialog({ isOpen, onClose, onAdd }) {
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

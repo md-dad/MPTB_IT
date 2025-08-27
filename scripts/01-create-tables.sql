@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     auth_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     email VARCHAR(255) UNIQUE NOT NULL,
     full_name VARCHAR(255) NOT NULL, -- Changed from 'name' to 'full_name' to match auth code
-    role VARCHAR(50) NOT NULL CHECK (role IN ('super_admin', 'manager')), -- Changed 'manager_it' to 'manager' to match auth code
+    role VARCHAR(50) NOT NULL CHECK (role IN ('super_admin', 'manager')), -- Changed 'manager' to 'manager' to match auth code
     department VARCHAR(255),
     phone VARCHAR(20),
     status VARCHAR(50) DEFAULT 'active' CHECK (status IN ('active', 'inactive')), -- Added status field with proper check constraint
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS notifications (
     title VARCHAR(255) NOT NULL,
     message TEXT NOT NULL,
     type VARCHAR(50) DEFAULT 'info' CHECK (type IN ('info', 'warning', 'error', 'success')),
-    target_role VARCHAR(50) CHECK (target_role IN ('all', 'super_admin', 'manager_it')),
+    target_role VARCHAR(50) CHECK (target_role IN ('all', 'super_admin', 'manager')),
     is_active BOOLEAN DEFAULT true,
     created_by INTEGER REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

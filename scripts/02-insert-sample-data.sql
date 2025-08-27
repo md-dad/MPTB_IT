@@ -54,4 +54,4 @@ INSERT INTO cms_content (title, content_type, content, status, author_id) VALUES
 -- Insert sample notifications
 INSERT INTO notifications (title, message, type, target_role, is_active, created_by, expires_at) VALUES
 ('Welcome to IT Inventory System', 'Welcome to the MP Tourism Board IT Inventory Management System. Please familiarize yourself with the system policies.', 'info', 'all', true, 1, '2024-12-31 23:59:59'),
-('Low Stock Alert', 'Several items are running low in stock. Please review and reorder as necessary.', 'warning', 'manager_it', true, 1, '2024-06-30 23:59:59');
+('Low Stock Alert', 'Several items are running low in stock. Please review and reorder as necessary.', 'warning', 'manager', true, 1, '2024-06-30 23:59:59');

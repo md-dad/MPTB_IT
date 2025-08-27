@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,12 +8,18 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Switch } from "@/components/ui/switch"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 export function EditUserDialog({ isOpen, onClose, onEdit, user }) {
   const [formData, setFormData] = useState({
@@ -23,7 +29,7 @@ export function EditUserDialog({ isOpen, onClose, onEdit, user }) {
     department: "",
     phone: "",
     isActive: true,
-  })
+  });
 
   useEffect(() => {
     if (user) {
@@ -34,27 +40,29 @@ export function EditUserDialog({ isOpen, onClose, onEdit, user }) {
         department: user.department || "",
         phone: user.phone || "",
         isActive: user.isActive ?? true,
-      })
+      });
     }
-  }, [user])
+  }, [user]);
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (formData.name && formData.email && formData.role) {
-      onEdit(formData)
+      onEdit(formData);
     }
-  }
+  };
 
   const handleChange = (field, value) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <DialogTitle>Edit User</DialogTitle>
-          <DialogDescription>Update user account information and permissions.</DialogDescription>
+          <DialogDescription>
+            Update user account information and permissions.
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -84,13 +92,16 @@ export function EditUserDialog({ isOpen, onClose, onEdit, user }) {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="role">Role *</Label>
-              <Select value={formData.role} onValueChange={(value) => handleChange("role", value)}>
+              <Select
+                value={formData.role}
+                onValueChange={(value) => handleChange("role", value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select role" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="super_admin">Super Admin</SelectItem>
-                  <SelectItem value="manager_it">Manager IT</SelectItem>
+                  <SelectItem value="manager">Manager IT</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -133,5 +144,5 @@ export function EditUserDialog({ isOpen, onClose, onEdit, user }) {
         </form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

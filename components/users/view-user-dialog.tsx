@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Dialog,
@@ -7,14 +7,28 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Shield, User, Mail, Phone, Building, Calendar, Clock } from "lucide-react"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Shield,
+  User,
+  Mail,
+  Phone,
+  Building,
+  Calendar,
+  Clock,
+} from "lucide-react";
 
 export function ViewUserDialog({ isOpen, onClose, user }) {
-  if (!user) return null
+  if (!user) return null;
 
   const getRoleBadge = (role) => {
     switch (role) {
@@ -24,18 +38,18 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
             <Shield className="h-3 w-3 mr-1" />
             Super Admin
           </Badge>
-        )
-      case "manager_it":
+        );
+      case "manager":
         return (
           <Badge variant="secondary">
             <User className="h-3 w-3 mr-1" />
             Manager IT
           </Badge>
-        )
+        );
       default:
-        return <Badge variant="outline">{role}</Badge>
+        return <Badge variant="outline">{role}</Badge>;
     }
-  }
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -45,7 +59,9 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
             <User className="h-5 w-5" />
             User Details
           </DialogTitle>
-          <DialogDescription>Complete information for {user.name}</DialogDescription>
+          <DialogDescription>
+            Complete information for {user.name}
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6">
@@ -57,7 +73,9 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-sm font-medium text-gray-500">Full Name</div>
+                  <div className="text-sm font-medium text-gray-500">
+                    Full Name
+                  </div>
                   <div className="text-base">{user.name}</div>
                 </div>
                 <div>
@@ -79,7 +97,9 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
                     <Phone className="h-4 w-4" />
                     Phone Number
                   </div>
-                  <div className="text-base">{user.phone || "Not provided"}</div>
+                  <div className="text-base">
+                    {user.phone || "Not provided"}
+                  </div>
                 </div>
               </div>
 
@@ -101,8 +121,13 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-sm font-medium text-gray-500">Status</div>
-                  <Badge variant={user.isActive ? "default" : "secondary"} className="mt-1">
+                  <div className="text-sm font-medium text-gray-500">
+                    Status
+                  </div>
+                  <Badge
+                    variant={user.isActive ? "default" : "secondary"}
+                    className="mt-1"
+                  >
                     {user.isActive ? "Active" : "Inactive"}
                   </Badge>
                 </div>
@@ -137,7 +162,9 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
                   <>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm">Full system administration</span>
+                      <span className="text-sm">
+                        Full system administration
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -172,7 +199,9 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
-                      <span className="text-sm text-gray-500">User management (restricted)</span>
+                      <span className="text-sm text-gray-500">
+                        User management (restricted)
+                      </span>
                     </div>
                   </>
                 )}
@@ -186,5 +215,5 @@ export function ViewUserDialog({ isOpen, onClose, user }) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
